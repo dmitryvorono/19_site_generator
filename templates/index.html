@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title>Bootstrap Example</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+      <div class='b-page'>
+        <div class='b-page__line'>
+          <div class='b-header page-header'>
+            <h1>Список статей</h1>
+          </div>
+        </div>
+        <div class='b-page__line'>
+          {% for topic in topics %}
+          <div class='b-articles'>
+            <div class='b-articles__head'>
+              <h2>{{ topic.title }}</h2>
+            </div>
+            <ul class'b-articles__links'>
+              {% for article in articles %}
+                {% if article.topic == topic.slug %}
+                  <li>
+                    <a href='{{ article.source }}' class='b-link'>{{ article.title }}</a>
+                  </li>
+                {% endif%}
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </body>
+</html>
