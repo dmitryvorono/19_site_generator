@@ -1,11 +1,10 @@
 import os
-import sys
 import json
 import errno
-from jinja2 import Template
 from jinja2 import Environment, FileSystemLoader
 from markdown import markdown
 import urllib
+from livereload import Server
 
 
 def load_config_json(filepath):
@@ -23,13 +22,16 @@ def load_data(filepath):
 
 
 def get_jinja_template(templates_folder, templates_filename):
-    jinja_env = Environment(loader=FileSystemLoader(templates_folder), trim_blocks=True, lstrip_blocks=True)
+    jinja_env = Environment(loader=FileSystemLoader(templates_folder),
+                            trim_blocks=True,
+                            lstrip_blocks=True)
     return jinja_env.get_template(templates_filename)
 
 
 def render_index_page(jinja_template, config, output='index.html'):
     with open(output, 'w') as file_handler:
-        file_handler.write(jinja_template.render(topics=config['topics'], articles=config['articles']))
+        file_handler.write(jinja_template.render(topics=config['topics'],
+                                                 articles=config['articles']))
 
 
 def convert_markdown_to_html(markdown_filepath):
@@ -51,7 +53,8 @@ def render_article_page(jinja_template, article, content, output):
     mkdir_p(os.path.dirname(output))
     print(output)
     with open(output, 'w') as file_handler:
-        file_handler.write(jinja_template.render(article=article, content=content))
+        file_handler.write(jinja_template.render(article=article,
+                                                 content=content))
 
 
 def encode_to_url(string):
@@ -67,10 +70,16 @@ def render_articles(jinja_template, articles, articles_folder):
         article['html'] = encode_to_url(output)
 
 
-if __name__ == '__main__':
+def make_site():
     templates_folder = 'templates'
     config = load_config_json('config.json')
     index_template = get_jinja_template(templates_folder, 'index.html')
     article_template = get_jinja_template(templates_folder, 'article.html')
     render_articles(article_template, config['articles'], 'articles')
     render_index_page(index_template, config)
+
+
+if __name__ == '__main__':
+    server = Server()
+    server.watch('templates/*.html', make_site)
+    server.serve(root='.')
