@@ -21,11 +21,12 @@ def load_data(filepath):
         return file_handler.read()
 
 
-def get_jinja_template(templates_folder, templates_filename):
+def load_jinja_templates(templates_folder):
     jinja_env = Environment(loader=FileSystemLoader(templates_folder),
                             trim_blocks=True,
                             lstrip_blocks=True)
-    return jinja_env.get_template(templates_filename)
+    with os.scandir(templates_folder) as folder_iterator:
+        return {entry.name: jinja_env.get_template(entry.name) for entry in folder_iterator if entry.is_file()}
 
 
 def render_index_page(jinja_template, config, output='index.html'):
@@ -51,7 +52,6 @@ def mkdir_p(path):
 
 def render_article_page(jinja_template, article, content, output):
     mkdir_p(os.path.dirname(output))
-    print(output)
     with open(output, 'w') as file_handler:
         file_handler.write(jinja_template.render(article=article,
                                                  content=content))
@@ -73,10 +73,9 @@ def render_articles(jinja_template, articles, articles_folder):
 def make_site():
     templates_folder = 'templates'
     config = load_config_json('config.json')
-    index_template = get_jinja_template(templates_folder, 'index.html')
-    article_template = get_jinja_template(templates_folder, 'article.html')
-    render_articles(article_template, config['articles'], 'articles')
-    render_index_page(index_template, config)
+    jinja_templates = load_jinja_templates(templates_folder)
+    render_articles(jinja_templates['article.html'], config['articles'], 'articles')
+    render_index_page(jinja_templates['index.html'], config)
 
 
 if __name__ == '__main__':
