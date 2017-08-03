@@ -4,7 +4,7 @@
 они заставляют вычитывать код чтобы разобраться в смысле изменений внесенных кем-то другим. 
 Это время и нервы помноженные на размер команды. Не делай так!
 
-Вот тут написано как надо делать:
+Вoт тут написано как надо делать:
 
 - [A Note About Git Commit Messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) (en)
 - [How to Write a Git Commit Message](http://chris.beams.io/posts/git-commit/) (en)

@@ -26,7 +26,8 @@ def load_jinja_templates(templates_folder):
                             trim_blocks=True,
                             lstrip_blocks=True)
     with os.scandir(templates_folder) as folder_iterator:
-        return {entry.name: jinja_env.get_template(entry.name) for entry in folder_iterator if entry.is_file()}
+        return {entry.name: jinja_env.get_template(entry.name)
+                for entry in folder_iterator if entry.is_file()}
 
 
 def render_index_page(jinja_template, config, output='index.html'):
@@ -72,13 +73,17 @@ def render_articles(jinja_template, articles, articles_folder):
 
 def make_site():
     templates_folder = 'templates'
+    articles_folder = 'articles'
     config = load_config_json('config.json')
     jinja_templates = load_jinja_templates(templates_folder)
-    render_articles(jinja_templates['article.html'], config['articles'], 'articles')
+    render_articles(jinja_templates['article.html'],
+                    config['articles'],
+                    articles_folder)
     render_index_page(jinja_templates['index.html'], config)
 
 
 if __name__ == '__main__':
     server = Server()
     server.watch('templates/*.html', make_site)
+    server.watch('articles/**/*.md', make_site)
     server.serve(root='.')
