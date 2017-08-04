@@ -24,13 +24,13 @@
           {% for topic in topics %}
           <div class='b-articles'>
             <div class='b-articles__head'>
-              <h2>{{ topic.title }}</h2>
+              <h2>{{ topic.title|e }}</h2>
             </div>
             <ul class='b-articles__links'>
               {% for article in articles %}
                 {% if article.topic == topic.slug %}
                   <li>
-                    <a href='{{ article.html }}' class='b-link'>{{ article.title }}</a>
+                    <a href='{{ article.html }}' class='b-link'>{{ article.title|e }}</a>
                   </li>
                 {% endif%}
               {% endfor %}
