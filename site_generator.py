@@ -66,7 +66,7 @@ def render_articles(jinja_template, articles, articles_folder):
     for article in articles:
         path_to_article = ''.join([articles_folder, '/', article['source']])
         html = convert_markdown_to_html(path_to_article)
-        output = ''.join([article['source'][0:-2], 'html'])
+        output = ''.join([article['source'][:-2], 'html'])
         render_article_page(jinja_template, article, html, output)
         article['html'] = encode_to_url(output)
 
