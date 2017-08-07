@@ -25,6 +25,7 @@ def load_jinja_templates(templates_folder):
     jinja_env = Environment(loader=FileSystemLoader(templates_folder),
                             trim_blocks=True,
                             lstrip_blocks=True)
+    jinja_env
     with os.scandir(templates_folder) as folder_iterator:
         return {entry.name: jinja_env.get_template(entry.name)
                 for entry in folder_iterator if entry.is_file()}
@@ -58,8 +59,6 @@ def render_article_page(jinja_template, article, content, output):
                                                  content=content))
 
 
-def encode_to_url(string):
-    return urllib.parse.quote(string)
 
 
 def render_articles(jinja_template, articles, articles_folder):
@@ -68,7 +67,7 @@ def render_articles(jinja_template, articles, articles_folder):
         html = convert_markdown_to_html(path_to_article)
         output = ''.join([article['source'][:-2], 'html'])
         render_article_page(jinja_template, article, html, output)
-        article['html'] = encode_to_url(output)
+        article['url'] = output
 
 
 def make_site():
