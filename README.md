@@ -2,7 +2,7 @@
 
 This project generate small static site from articles written markdown.
 
-[Demonstarion](https://dmitryvorono.github.io/19_site_generator/)
+[Demonstration page](https://dmitryvorono.github.io/19_site_generator/)
 
 # Requirements
 
