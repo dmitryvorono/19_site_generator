@@ -30,7 +30,7 @@
               {% for article in articles %}
                 {% if article.topic == topic.slug %}
                   <li>
-                    <a href='{{ article.html }}' class='b-link'>{{ article.title|e }}</a>
+                    <a href='{{ article.url|urlencode }}' class='b-link'>{{ article.title|e }}</a>
                   </li>
                 {% endif%}
               {% endfor %}
